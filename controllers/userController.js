@@ -15,7 +15,17 @@ const user_get = async (req, res) => {
 };
 
 const user_post = async (req, res) => {
-  console.log('user_post', req.body);
+  console.log('data from form', req.body);
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    return res.status(422).json({errors: errors.array()});
+  }
+  const inUser = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  };
+
   try {
     const user = await userModel.insertUser(req.body);
     console.log('inserted', user);
